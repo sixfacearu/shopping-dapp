@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <script src="web3.min.js"></script>  
+  </head>
+<center><h2 align="center" style="color:blue;border:1px dotted black;width:500px;background:white;">Shopping Product</h2></center>
+  <body align="center" background="1.jpg">
+	<center><div class="cls" style="width:700px; height:200px;background:LightGray;border:1px dotted black;text-align:center;"><h3>ADD PRODUCT</h3>
+                <input id="a1" type="text" placeholder="product name" />
+                <input id="a2" type="text" placeholder="product price" />
+                <input id="a3" type="text" placeholder="product availability" /><br><br><br>
+                <input id="a4" type="text" placeholder="product Id" /><br><br>
+		<input type="button" onclick="setproduct()" value="addproduct"></div></br></center>
+       <center> <div class="cls" style="width:700px;height:100px;background:LightGray;border:1px dotted black;text-align:center"><h3>BUY PRODUCT</h3>
+		<input id="a5" type="text" placeholder="product id" />
+                <input id="a6" type="text" placeholder="product count" />
+		<input type="button" onclick="buyproduct()" value="buyproduct" >
+	</div></br></center>
+        <center><div class="cls" style="width:700px;height:200px;background:LightGray;border:1px dotted black;text-align:center"><h3>GET PRODUCT DETAILS</h3>
+		<input id="a7" type="text" placeholder="product id" />
+		<input type="button" onclick="getproductdetails()" value="getDetails" ><br><br>
+                <input id="a11" type="text" placeholder="product name" /><br>
+                <input id="a21" type="text" placeholder="product price" /><br>
+                <input id="a31" type="text" placeholder="product availability" />
+	</div></br></center>
+</body>
+<script>
+   
+        web3.eth.defaultAccount = web3.eth.accounts[0];
+        var shop = web3.eth.contract([
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_id",
+				"type": "uint256"
+			}
+		],
+		"name": "getdetails",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"name": "availability",
+				"type": "uint256"
+			},
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"name": "count",
+				"type": "uint256"
+			}
+		],
+		"name": "buyproduct",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "price",
+				"type": "uint256"
+			},
+			{
+				"name": "availability",
+				"type": "uint256"
+			},
+			{
+				"name": "id",
+				"type": "uint256"
+			}
+		],
+		"name": "setproduct",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]);
+ var shop = shop.at('0x976e4735f862902f9b457fc3419a7364cecfaa02');
+    
+     if(!web3.isConnected()) {
+  
+        console.log("Ok");
+        
+      } else {
+        console.log("no");
+      }
+      web3.version.getNetwork((err, netId) => {
+            switch (netId) {
+              case "1":
+                console.log('This is mainnet')
+                break
+              case "2":
+                console.log('This is the deprecated Morden test network.')
+                break
+              case "3":
+                console.log('This is the ropsten test network.')
+                break
+              case "4":
+                console.log('This is the Rinkeby test network.')
+                break
+              case "42":
+                console.log('This is the Kovan test network.')
+                break
+              default:
+                console.log('This is an unknown network.')
+            }
+        })
+function setproduct()
+{
+ var a=document.getElementById("a1");
+ var b=document.getElementById("a2");
+ var c=document.getElementById("a3");
+ var d=document.getElementById("a4");
+ 
+	return shop.setproduct(a.value,b.value,c.value,d.value,function(error,result){
+		if(!error){
+			alert(result);
+		}
+		else{
+			console.error(error);
+		}
+	});
+	
+	//alert("done!....");
+}
+function buyproduct()
+{
+ var e=document.getElementById("a5").value;
+ var k=document.getElementById("a6").value;
+	return shop.buyproduct(e,k,function(error,result){
+		if(!error){
+			alert(result);
+		}
+		else{
+			console.error(error);
+		}
+	});
+	
+	//alert("done!....");
+}
+function getproductdetails()
+{
+ var f=document.getElementById("a7").value;
+ 
+	return shop.getdetails(f,function(error,result){
+		if(!error){
+        document.getElementById('a11').value =result[0];
+	document.getElementById('a21').value = result[1];
+	document.getElementById('a31').value = result[2];
+		}
+		else{
+			console.error(error);
+		}
+	});
+	
+	//alert("done!....");
+}
+</script>
+</html>
