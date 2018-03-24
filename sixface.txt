@@ -1,1 +1,10 @@
-first time using git commend base
+git init
+git config --global user.name "sixfacearu"
+git config --global user.email "sixface0324@gmail.com"
+git clone (repository url)
+cd repository name
+dir
+add newfilename
+git status
+git commit -m "first commit" sixface.txt
+git push -u origin master
